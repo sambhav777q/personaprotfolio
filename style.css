@@ -1714,10 +1714,37 @@ body {
 
   .p5-phone-shell {
     max-width: 100%;
+    transform: none !important;
+    box-shadow: 4px 4px 0px var(--red) !important;
+    border-radius: 12px;
   }
 
   .phone-screen-body {
-    height: 320px;
+    height: 38vh;
+    max-height: 290px;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .p5-bubble {
+    max-width: 90%;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  .phone-screen-input-area {
+    padding: 8px;
+    gap: 6px;
+  }
+
+  #phone-chat-input {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  #phone-chat-submit {
+    padding: 6px 12px;
+    font-size: 13px;
   }
 
   .p5-sound-toggle-btn {

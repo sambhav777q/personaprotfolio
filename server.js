@@ -168,9 +168,13 @@ app.post('/api/send-email', rateLimiter, async (req, res) => {
 });
 
 // Start the Express server
-app.listen(PORT, () => {
-  console.log(`=========================================`);
-  console.log(`PHANTOM THIEF OS SERVER RUNNING ON PORT ${PORT}`);
-  console.log(`Navigate to: http://localhost:${PORT}`);
-  console.log(`=========================================`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`=========================================`);
+    console.log(`PHANTOM THIEF OS SERVER RUNNING ON PORT ${PORT}`);
+    console.log(`Navigate to: http://localhost:${PORT}`);
+    console.log(`=========================================`);
+  });
+}
+
+module.exports = app;
