@@ -1534,7 +1534,7 @@ body {
    ══════════════════════════════════════ */
 @media (max-width: 768px) {
   body {
-    overflow-y: auto;
+    overflow: hidden;
   }
 
   .scanlines {
@@ -1572,28 +1572,45 @@ body {
     display: none;
   }
 
+  .p5-sticker {
+    display: none !important;
+  }
+
   .home-layout {
-    grid-template-columns: 1fr;
-    height: auto;
-    padding-top: 140px;
-    padding-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 70px 20px 20px 20px;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .menu-container {
-    padding: 0 20px;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
   }
 
   .menu-stack {
     width: 100%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 8px;
   }
 
   .p5-menu-btn {
     width: 100%;
+    max-width: 320px;
     margin-left: 0 !important;
-    font-size: 26px;
-    padding: 10px 20px;
+    font-size: 22px;
+    padding: 8px 16px;
   }
 
   .menu-star-indicator {
@@ -1601,17 +1618,22 @@ body {
   }
 
   .preview-container {
-    padding: 30px 20px;
+    padding: 10px 0;
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    justify-content: center;
     align-items: center;
   }
 
   .preview-card {
     width: 100%;
-    padding: 24px;
+    padding: 20px;
   }
 
   .preview-title {
-    font-size: 32px;
+    font-size: 28px;
+    margin-bottom: 8px;
   }
 
   /* Subpages */
@@ -1663,15 +1685,24 @@ body {
 
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-  .shutter-blade, .p5-menu-btn, .p5-action-btn, .p5-back-btn,
-  .silhouette-svg, .star, .scroll-strip-text, .compendium-entry,
-  .p5-bubble, .p5-typing-dot, .target-card, .p5-spinner-radar::before,
-  .p5-spinner-radar::after {
+  body:not(.allow-animations) .shutter-blade,
+  body:not(.allow-animations) .p5-menu-btn,
+  body:not(.allow-animations) .p5-action-btn,
+  body:not(.allow-animations) .p5-back-btn,
+  body:not(.allow-animations) .silhouette-svg,
+  body:not(.allow-animations) .star,
+  body:not(.allow-animations) .scroll-strip-text,
+  body:not(.allow-animations) .compendium-entry,
+  body:not(.allow-animations) .p5-bubble,
+  body:not(.allow-animations) .p5-typing-dot,
+  body:not(.allow-animations) .target-card,
+  body:not(.allow-animations) .p5-spinner-radar::before,
+  body:not(.allow-animations) .p5-spinner-radar::after {
     transition: none !important;
     animation: none !important;
   }
-  .silhouette-svg { opacity: 1; transform: none; }
-  .p5-bubble { opacity: 1; transform: none; }
+  body:not(.allow-animations) .silhouette-svg { opacity: 1; transform: none; }
+  body:not(.allow-animations) .p5-bubble { opacity: 1; transform: none; }
 }
 
 /* Scrollbar customizations */

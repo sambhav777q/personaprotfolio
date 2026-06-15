@@ -8,6 +8,9 @@ if (document.readyState === 'loading') {
 }
 
 function initApp() {
+  // ── Detect Brave Browser to override prefers-reduced-motion spoofing ──
+  detectBraveAndEnableAnimations();
+
   // ── Setup Starfield ──
   createStars();
   
@@ -31,6 +34,16 @@ function initApp() {
     chatForm.addEventListener('submit', (e) => {
       e.preventDefault();
       handleFormSubmit();
+    });
+  }
+}
+
+function detectBraveAndEnableAnimations() {
+  if (navigator.brave && typeof navigator.brave.isBrave === 'function') {
+    navigator.brave.isBrave().then(isBrave => {
+      if (isBrave) {
+        document.body.classList.add('allow-animations');
+      }
     });
   }
 }
