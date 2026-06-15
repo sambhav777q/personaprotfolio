@@ -771,8 +771,40 @@ async function handleFormSubmit() {
     body.appendChild(typing);
     body.scrollTop = body.scrollHeight;
 
+    let directSupabaseSuccess = false;
+    let directSupabaseError = null;
+
+    // ── 1. Direct Client-to-Supabase Write (Guarantees database storage even on static hosting) ──
     try {
-      // Send HTTP request to backend Express API
+      const dbRes = await fetch("https://nefzntxzwxjqwgpcahgw.supabase.co/rest/v1/messages", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lZnpudHh6d3hqcXdncGNhaGd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDU2NjIsImV4cCI6MjA5NTgyMTY2Mn0.7xD4AQqAsn5v2tU1KNp5P7OZPRMfCgEHNSYfYfEk8MI',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lZnpudHh6d3hqcXdncGNhaGd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDU2NjIsImV4cCI6MjA5NTgyMTY2Mn0.7xD4AQqAsn5v2tU1KNp5P7OZPRMfCgEHNSYfYfEk8MI',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+          name: senderName,
+          email: senderEmail,
+          phone: senderPhone,
+          message: text
+        })
+      });
+      if (dbRes.ok) {
+        directSupabaseSuccess = true;
+        console.log("✅ Message saved directly to Supabase from browser client.");
+      } else {
+        directSupabaseError = await dbRes.text();
+      }
+    } catch (dbErr) {
+      console.warn("⚠️ Client-side Supabase insert failed:", dbErr);
+      directSupabaseError = dbErr.message;
+    }
+
+    // ── 2. Request Vercel Backend (For email notification routing) ──
+    let backendSuccess = false;
+    try {
       const res = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -783,29 +815,40 @@ async function handleFormSubmit() {
           message: text
         })
       });
-
-      if (typing.parentNode === body) {
-        body.removeChild(typing);
-      }
-
       if (res.ok) {
-        // Success response bubble
-        const successBubble = document.createElement('div');
-        successBubble.className = 'p5-bubble incoming';
-        successBubble.innerHTML = `
-          <div class="bubble-tag">SYSTEM</div>
-          <div class="bubble-value">Message sent successfully! Sambhav will get back to you soon.</div>
-        `;
-        body.appendChild(successBubble);
-      } else {
-        throw new Error('API dispatch error');
+        backendSuccess = true;
+        console.log("✅ Backend email notification trigger succeeded.");
       }
     } catch (err) {
-      console.error(err);
-      if (typing.parentNode === body) {
-        body.removeChild(typing);
+      console.warn("⚠️ Backend notification dispatch failed:", err);
+    }
+
+    // Remove typing bubble
+    if (typing.parentNode === body) {
+      body.removeChild(typing);
+    }
+
+    // ── 3. Success / Error Feedback ──
+    if (directSupabaseSuccess || backendSuccess) {
+      const successBubble = document.createElement('div');
+      successBubble.className = 'p5-bubble incoming';
+      
+      let feedback = "Message sent successfully!";
+      if (directSupabaseSuccess && backendSuccess) {
+        feedback = "Message sent successfully! (Saved to DB & Email notified)";
+      } else if (directSupabaseSuccess) {
+        feedback = "Message sent successfully! (Saved to database)";
+      } else if (backendSuccess) {
+        feedback = "Message sent successfully! (Email notification sent)";
       }
-      // Error bubble
+
+      successBubble.innerHTML = `
+        <div class="bubble-tag">SYSTEM</div>
+        <div class="bubble-value">${feedback}</div>
+      `;
+      body.appendChild(successBubble);
+    } else {
+      console.error("❌ Both client database insert and email dispatch failed:", directSupabaseError);
       const errorBubble = document.createElement('div');
       errorBubble.className = 'p5-bubble incoming';
       errorBubble.style.borderColor = 'var(--red)';
