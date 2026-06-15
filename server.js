@@ -32,10 +32,16 @@ if (fs.existsSync(envPath)) {
 
 // Initialize Resend API client
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-if (!RESEND_API_KEY) {
-  console.error('❌ ERROR: RESEND_API_KEY environment variable is not defined!');
+let resend = null;
+if (RESEND_API_KEY) {
+  try {
+    resend = new Resend(RESEND_API_KEY);
+  } catch (e) {
+    console.error('⚠️ Failed to initialize Resend client:', e);
+  }
+} else {
+  console.warn('⚠️ RESEND_API_KEY environment variable is not defined.');
 }
-const resend = new Resend(RESEND_API_KEY);
 
 // ── Security Headers Middleware ──
 app.use((req, res, next) => {
@@ -122,48 +128,115 @@ app.post('/api/send-email', rateLimiter, async (req, res) => {
   const safePhone = escapeHTML(phone);
   const safeMessage = escapeHTML(message);
 
-  try {
-    const data = await resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to: 'csit2081041_sambhav@achsnepal.edu.np',
-      subject: `💬 New Message from ${safeName}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 4px solid #000; padding: 25px; background-color: #ECEAE4;">
-          <h2 style="background-color: #FF1A3C; color: #fff; padding: 12px; margin-top: 0; transform: skewX(-5deg); text-transform: uppercase; font-size: 20px; font-weight: bold; display: inline-block;">
-            PORTFOLIO CONTACT FORM
-          </h2>
-          
-          <table style="width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 20px;">
-            <tr style="border-bottom: 1px solid #ccc;">
-              <td style="padding: 8px 0; font-weight: bold; width: 120px; color: #0b0b0f;">Name:</td>
-              <td style="padding: 8px 0; color: #333;">${safeName}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #ccc;">
-              <td style="padding: 8px 0; font-weight: bold; color: #0b0b0f;">Email:</td>
-              <td style="padding: 8px 0; color: #333;"><a href="mailto:${safeEmail}">${safeEmail}</a></td>
-            </tr>
-            <tr style="border-bottom: 1px solid #ccc;">
-              <td style="padding: 8px 0; font-weight: bold; color: #0b0b0f;">Phone:</td>
-              <td style="padding: 8px 0; color: #333;"><a href="tel:${safePhone}">${safePhone}</a></td>
-            </tr>
-          </table>
+  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_KEY;
 
-          <p style="font-size: 16px; color: #0b0b0f; font-weight: bold; margin-bottom: 8px;">Message:</p>
-          <div style="background-color: #0b0b0f; color: #fff; padding: 20px; border-left: 6px solid #FF1A3C; font-size: 15px; line-height: 1.6; margin-bottom: 25px; border-radius: 4px;">
-            ${safeMessage.replace(/\n/g, '<br>')}
+  if (!RESEND_API_KEY && (!SUPABASE_URL || !SUPABASE_KEY)) {
+    console.error('❌ ERROR: Neither Resend nor Supabase credentials are configured!');
+    return res.status(500).json({ error: 'Messaging API configurations are missing.' });
+  }
+
+  let supabaseSuccess = false;
+  let supabaseError = null;
+
+  // ── 1. Store in Supabase ──
+  if (SUPABASE_URL && SUPABASE_KEY) {
+    try {
+      const supabaseRes = await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+          name: safeName,
+          email: safeEmail,
+          phone: safePhone,
+          message: safeMessage
+        })
+      });
+
+      if (supabaseRes.ok) {
+        console.log('✅ Message successfully saved to Supabase.');
+        supabaseSuccess = true;
+      } else {
+        const errorText = await supabaseRes.text();
+        console.error('❌ Supabase insert failed:', errorText);
+        supabaseError = errorText;
+      }
+    } catch (err) {
+      console.error('❌ Supabase network call error:', err);
+      supabaseError = err.message;
+    }
+  }
+
+  // ── 2. Dispatch email via Resend ──
+  let emailSuccess = false;
+  let emailError = null;
+
+  if (RESEND_API_KEY && resend) {
+    try {
+      const data = await resend.emails.send({
+        from: 'onboarding@resend.dev',
+        to: 'csit2081041_sambhav@achsnepal.edu.np',
+        subject: `💬 New Message from ${safeName}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 4px solid #000; padding: 25px; background-color: #ECEAE4;">
+            <h2 style="background-color: #FF1A3C; color: #fff; padding: 12px; margin-top: 0; transform: skewX(-5deg); text-transform: uppercase; font-size: 20px; font-weight: bold; display: inline-block;">
+              PORTFOLIO CONTACT FORM
+            </h2>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 20px;">
+              <tr style="border-bottom: 1px solid #ccc;">
+                <td style="padding: 8px 0; font-weight: bold; width: 120px; color: #0b0b0f;">Name:</td>
+                <td style="padding: 8px 0; color: #333;">${safeName}</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #ccc;">
+                <td style="padding: 8px 0; font-weight: bold; color: #0b0b0f;">Email:</td>
+                <td style="padding: 8px 0; color: #333;"><a href="mailto:${safeEmail}">${safeEmail}</a></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #ccc;">
+                <td style="padding: 8px 0; font-weight: bold; color: #0b0b0f;">Phone:</td>
+                <td style="padding: 8px 0; color: #333;"><a href="tel:${safePhone}">${safePhone}</a></td>
+              </tr>
+            </table>
+
+            <p style="font-size: 16px; color: #0b0b0f; font-weight: bold; margin-bottom: 8px;">Message:</p>
+            <div style="background-color: #0b0b0f; color: #fff; padding: 20px; border-left: 6px solid #FF1A3C; font-size: 15px; line-height: 1.6; margin-bottom: 25px; border-radius: 4px;">
+              ${safeMessage.replace(/\n/g, '<br>')}
+            </div>
+            <p style="font-size: 12px; color: #666; border-top: 1px dashed #999; padding-top: 15px;">
+              Sender Host IP: Served via Portfolio Backend System.
+            </p>
           </div>
-          <p style="font-size: 12px; color: #666; border-top: 1px dashed #999; padding-top: 15px;">
-            Sender Host IP: Served via Portfolio Backend System.
-          </p>
-        </div>
-      `
-    });
+        `
+      });
 
-    console.log('Email sent successfully:', data);
-    return res.status(200).json({ success: true, id: data.id });
-  } catch (error) {
-    console.error('Error dispatching email via Resend:', error);
-    return res.status(500).json({ error: 'Failed to send message via email.' });
+      console.log('✅ Email sent successfully via Resend:', data);
+      emailSuccess = true;
+    } catch (err) {
+      console.error('❌ Resend dispatch error:', err);
+      emailError = err.message;
+    }
+  }
+
+  // ── 3. Return Combined Status ──
+  if (supabaseSuccess || emailSuccess) {
+    return res.status(200).json({
+      success: true,
+      storedInDb: supabaseSuccess,
+      emailSent: emailSuccess
+    });
+  } else {
+    return res.status(500).json({
+      error: 'Message delivery failed.',
+      details: {
+        database: supabaseError,
+        email: emailError
+      }
+    });
   }
 });
 
