@@ -1,4 +1,0 @@
-[32496:30724:0616/003516.278:INFO:components\enterprise\browser\controller\chrome_browser_cloud_management_controller.cc:239] No machine level policy manager exists.
-[26148:21016:0616/003516.450:ERROR:ui\gl\direct_composition_support.cc:247] GetGpuDriverOverlayInfo: Failed to retrieve video device
-[32496:13644:0616/003516.500:WARNING:chrome\browser\extensions\external_pref_loader.cc:294] You are using an old-style extension deployment method (external_extensions.json), which will soon be deprecated. (see http://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions)
-[32496:30724:0616/003516.620:WARNING:chrome\browser\extensions\external_registry_loader_win.cc:236] Error observing HKLM: Access is denied. (0x5)
