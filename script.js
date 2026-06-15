@@ -28,6 +28,9 @@ function initApp() {
   // ── Key Nav Setup ──
   setupKeyboardNav();
 
+  // ── Touch Nav Setup ──
+  setupTouchNav();
+
   // ── Chat Form Submit ──
   const chatForm = document.getElementById('phone-chat-form');
   if (chatForm) {
@@ -46,6 +49,27 @@ function detectBraveAndEnableAnimations() {
       }
     });
   }
+}
+
+function setupTouchNav() {
+  const menuButtons = document.querySelectorAll('.p5-menu-btn');
+  menuButtons.forEach(btn => {
+    btn.addEventListener('touchstart', () => {
+      if (currentView !== 'home') return;
+      const section = btn.dataset.section;
+      
+      // Select/Preview the touched section immediately
+      showPreview(section);
+      
+      // Sync focus index so if they navigate, it matches
+      const menuBtnsArray = Array.from(menuButtons);
+      focusedIndex = menuBtnsArray.indexOf(btn);
+      updateKeyboardFocus();
+      
+      // Play hover tick sound
+      playTick();
+    }, { passive: true });
+  });
 }
 
 // ── State Variables ──

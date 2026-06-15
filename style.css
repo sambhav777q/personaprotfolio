@@ -1569,7 +1569,22 @@ body {
   }
 
   #home-character {
-    display: none;
+    display: flex;
+    position: absolute;
+    right: -15%;
+    bottom: -5%;
+    height: 48vh;
+    width: 65vw;
+    opacity: 0.22;
+    z-index: 1;
+    pointer-events: none;
+    transform-origin: bottom right;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  #home-character .silhouette-svg {
+    height: 100%;
+    width: 100%;
   }
 
   .p5-sticker {
@@ -1595,6 +1610,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    z-index: 5;
   }
 
   .menu-stack {
@@ -1607,11 +1623,30 @@ body {
 
   .p5-menu-btn {
     width: 100%;
-    max-width: 320px;
+    max-width: 300px;
     margin-left: 0 !important;
-    font-size: 22px;
+    font-size: 20px;
     padding: 8px 16px;
+    transition: all 0.15s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
+
+  .p5-menu-btn:nth-child(1) { transform: skewX(-14deg) rotate(-3deg) translate3d(-15px, 0, 0); }
+  .p5-menu-btn:nth-child(2) { transform: skewX(-14deg) rotate(-3deg) translate3d(15px, 0, 0); }
+  .p5-menu-btn:nth-child(3) { transform: skewX(-14deg) rotate(-3deg) translate3d(-5px, 0, 0); }
+  .p5-menu-btn:nth-child(4) { transform: skewX(-14deg) rotate(-3deg) translate3d(25px, 0, 0); }
+
+  .p5-menu-btn:hover,
+  .p5-menu-btn.active,
+  .p5-menu-btn.keyboard-focus {
+    background: var(--white);
+    color: var(--red);
+    box-shadow: 6px 6px 0px var(--black);
+  }
+
+  .p5-menu-btn:nth-child(1):hover, .p5-menu-btn.active:nth-child(1) { transform: skewX(-14deg) rotate(-3deg) translate3d(-5px, -2px, 0); }
+  .p5-menu-btn:nth-child(2):hover, .p5-menu-btn.active:nth-child(2) { transform: skewX(-14deg) rotate(-3deg) translate3d(25px, -2px, 0); }
+  .p5-menu-btn:nth-child(3):hover, .p5-menu-btn.active:nth-child(3) { transform: skewX(-14deg) rotate(-3deg) translate3d(5px, -2px, 0); }
+  .p5-menu-btn:nth-child(4):hover, .p5-menu-btn.active:nth-child(4) { transform: skewX(-14deg) rotate(-3deg) translate3d(35px, -2px, 0); }
 
   .menu-star-indicator {
     display: none;
@@ -1624,11 +1659,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 5;
   }
 
   .preview-card {
     width: 100%;
-    padding: 20px;
+    padding: 16px 20px;
+    background: var(--black);
+    border: none;
+    outline: 4px solid var(--white);
+    clip-path: polygon(2% 0%, 100% 4%, 98% 96%, 0% 100%);
+    box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.95);
+  }
+
+  .preview-card:nth-of-type(even) {
+    clip-path: polygon(0% 4%, 98% 0%, 100% 96%, 2% 100%);
   }
 
   .preview-title {
