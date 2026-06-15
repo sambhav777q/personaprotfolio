@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-persona",
+  "version": "1.0.0",
+  "description": "Persona 5 Pause Menu themed portfolio website with Resend integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "resend": "^3.2.0"
+  }
+}

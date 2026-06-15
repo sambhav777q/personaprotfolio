@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAMBHAV GIRI — PHANTOM THIEF</title>
+  <meta name="description"
+    content="Personal portfolio of Sambhav Giri, student developer and UI/UX explorer, themed after the Persona 5 pause menu.">
+  <link rel="stylesheet" href="style.css?v=2.07">
+</head>
+
+<body>
+
+  <!-- ── Scanlines & Noise overlays ── -->
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- ── Sound Control Button ── -->
+  <button class="p5-sound-toggle-btn" id="audio-toggle-btn" aria-label="Toggle Sound Effects">
+    <!-- Sound Off Icon -->
+    <svg class="sound-off-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM12 4L9.91 6.09 12 8.18V4zm-8.27-.27L2.46 5.00l3.00 3.00H3v8h5l5 5v-8.27l4.73 4.73c-.62.46-1.31.83-2.07 1.07v2.06c1.3-.3 2.47-.94 3.44-1.83l3.43 3.43 1.27-1.27-18.28-18.27z" />
+    </svg>
+    <!-- Sound On Icon -->
+    <svg class="sound-on-icon" viewBox="0 0 24 24" aria-hidden="true" style="display:none;">
+      <path
+        d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+    </svg>
+    <span class="audio-label">SOUND OFF</span>
+  </button>
+
+  <!-- ── Shutter transition curtain ── -->
+  <div id="shutter" aria-hidden="true">
+    <div class="shutter-blade"></div>
+    <div class="shutter-blade"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       VIEW: HOME
+       ══════════════════════════════════════ -->
+  <div id="view-home" class="view active">
+    <div id="home-bg-num" aria-hidden="true">01</div>
+    <div class="halftone-panel" aria-hidden="true"></div>
+    <div class="p5-slash-decor" aria-hidden="true"></div>
+    <div class="starfield" id="starfield" aria-hidden="true"></div>
+
+    <!-- Floating shards overlay -->
+    <div class="p5-decor-shards" id="home-shards" aria-hidden="true">
+      <div class="shard shard-1 red"></div>
+      <div class="shard shard-2 black"></div>
+      <div class="shard shard-3 white"></div>
+      <div class="shard shard-4 red"></div>
+      <div class="shard shard-5 black"></div>
+    </div>
+
+    <!-- Scrolling Text Banners -->
+    <div class="scroll-strip-container" aria-hidden="true">
+      <div class="scroll-strip-text">
+        <span>PHANTOM THIEF SYSTEM</span>
+        <span>•</span>
+        <span>TAKE YOUR TIME</span>
+        <span>•</span>
+        <span>SAMBHAV GIRI PORTFOLIO</span>
+        <span>•</span>
+        <span>PHANTOM THIEF SYSTEM</span>
+        <span>•</span>
+        <span>TAKE YOUR TIME</span>
+        <span>•</span>
+        <span>SAMBHAV GIRI PORTFOLIO</span>
+        <span>•</span>
+        <span>PHANTOM THIEF SYSTEM</span>
+        <span>•</span>
+        <span>TAKE YOUR TIME</span>
+        <span>•</span>
+        <span>SAMBHAV GIRI PORTFOLIO</span>
+        <span>•</span>
+        <span>PHANTOM THIEF SYSTEM</span>
+        <span>•</span>
+        <span>TAKE YOUR TIME</span>
+        <span>•</span>
+        <span>SAMBHAV GIRI PORTFOLIO</span>
+      </div>
+    </div>
+    <div class="scroll-strip-container red-strip" aria-hidden="true">
+      <div class="scroll-strip-text">
+        <span>CODENAME: PHANTOM</span>
+        <span>•</span>
+        <span>STATUS: ACTIVE</span>
+        <span>•</span>
+        <span>VELVET ROOM GATE OPEN</span>
+        <span>•</span>
+        <span>CODENAME: PHANTOM</span>
+        <span>•</span>
+        <span>STATUS: ACTIVE</span>
+        <span>•</span>
+        <span>VELVET ROOM GATE OPEN</span>
+        <span>•</span>
+        <span>CODENAME: PHANTOM</span>
+        <span>•</span>
+        <span>STATUS: ACTIVE</span>
+        <span>•</span>
+        <span>VELVET ROOM GATE OPEN</span>
+        <span>•</span>
+        <span>CODENAME: PHANTOM</span>
+        <span>•</span>
+        <span>STATUS: ACTIVE</span>
+        <span>•</span>
+        <span>VELVET ROOM GATE OPEN</span>
+      </div>
+    </div>
+
+    <!-- System Info Header -->
+    <header class="p5-sys-header" aria-hidden="true">
+      <span><span class="pulse-dot"></span>PHANTOM THIEF OS v2.05</span>
+      <span class="clock-display">00:00:00</span>
+    </header>
+
+    <!-- Main Page Layout Grid -->
+    <main class="home-layout">
+      <!-- Menu Side -->
+      <section class="menu-container">
+        <div class="p5-title-badge">COMMAND SELECT</div>
+        <nav class="menu-stack" aria-label="Main menu options">
+          <!-- Button 1: Stats -->
+          <button class="p5-menu-btn active" data-section="stats" onmouseenter="showPreview('stats')"
+            onclick="handleMenuClick(this)" aria-label="Stat Tracker - About me">
+            <!-- Active Star Indicator -->
+            <svg class="menu-star-indicator" viewBox="0 0 24 24">
+              <path d="M12 0 L15.6 7.8 L24 8.7 L17.7 14.3 L19.5 22.5 L12 18.3 L4.5 22.5 L6.3 14.3 L0 8.7 L8.4 7.8 Z" />
+            </svg>
+            <span class="btn-text">
+              <span>S</span><span>t</span><span>A</span><span>t</span>
+              <span>T</span><span>r</span><span>A</span><span>c</span><span>K</span><span>e</span><span>r</span>
+            </span>
+          </button>
+
+          <!-- Button 2: Velvet Room -->
+          <button class="p5-menu-btn" data-section="velvet" onmouseenter="showPreview('velvet')"
+            onclick="handleMenuClick(this)" aria-label="Velvet Room - Work and projects">
+            <svg class="menu-star-indicator" viewBox="0 0 24 24">
+              <path d="M12 0 L15.6 7.8 L24 8.7 L17.7 14.3 L19.5 22.5 L12 18.3 L4.5 22.5 L6.3 14.3 L0 8.7 L8.4 7.8 Z" />
+            </svg>
+            <span class="btn-text">
+              <span>V</span><span>e</span><span>L</span><span>v</span><span>E</span><span>t</span>
+              <span>R</span><span>o</span><span>O</span><span>m</span>
+            </span>
+          </button>
+
+          <!-- Button 3: Mementos -->
+          <button class="p5-menu-btn" data-section="mementos" onmouseenter="showPreview('mementos')"
+            onclick="handleMenuClick(this)" aria-label="Mementos - Blog updates">
+            <svg class="menu-star-indicator" viewBox="0 0 24 24">
+              <path d="M12 0 L15.6 7.8 L24 8.7 L17.7 14.3 L19.5 22.5 L12 18.3 L4.5 22.5 L6.3 14.3 L0 8.7 L8.4 7.8 Z" />
+            </svg>
+            <span class="btn-text">
+              <span>M</span><span>e</span><span>M</span><span>e</span><span>N</span><span>t</span><span>O</span><span>s</span>
+            </span>
+          </button>
+
+          <!-- Button 4: Message Log -->
+          <button class="p5-menu-btn" data-section="message" onmouseenter="showPreview('message')"
+            onclick="handleMenuClick(this)" aria-label="Message Log - Contact detail">
+            <svg class="menu-star-indicator" viewBox="0 0 24 24">
+              <path d="M12 0 L15.6 7.8 L24 8.7 L17.7 14.3 L19.5 22.5 L12 18.3 L4.5 22.5 L6.3 14.3 L0 8.7 L8.4 7.8 Z" />
+            </svg>
+            <span class="btn-text">
+              <span>M</span><span>e</span><span>S</span><span>s</span><span>A</span><span>g</span><span>E</span>
+              <span>L</span><span>o</span><span>G</span>
+            </span>
+          </button>
+        </nav>
+      </section>
+
+      <!-- Previews / Info Cards Side -->
+      <section class="preview-container" aria-live="polite">
+        <!-- Stats preview -->
+        <div class="preview-card active" id="preview-stats">
+          <div class="preview-tag">CODENAME: PHANTOM</div>
+          <h2 class="preview-title">SAMBHAV<br>GIRI</h2>
+          <p class="preview-desc">A Student developer combining clean code with bold layouts — exploring logic,
+            interface engineering, and interactive systems.</p>
+          <button class="p5-action-btn" onclick="enterSection('stats')">ENTER TRACKER ▶</button>
+        </div>
+
+        <!-- Velvet preview -->
+        <div class="preview-card" id="preview-velvet">
+          <div class="preview-tag">VELVET ROOM COMPENDIUM</div>
+          <h2 class="preview-title">THE<br>WORK</h2>
+          <p class="preview-desc">Summoned project prototypes, codebases, and systems cataloged directly from the dev
+            workspace. Compendium version 1.0.</p>
+          <button class="p5-action-btn" onclick="enterSection('velvet')">ENTER COMPENDIUM ▶</button>
+        </div>
+
+        <!-- Mementos preview -->
+        <div class="preview-card" id="preview-mementos">
+          <div class="preview-tag">MEMENTOS DISPATCHES</div>
+          <h2 class="preview-title">THE<br>LOG</h2>
+          <p class="preview-desc">Logs and reports detailing code methodologies, grid blueprints, and design systems.
+            Check current target files.</p>
+          <button class="p5-action-btn" onclick="enterSection('mementos')">ENTER LOG ▶</button>
+        </div>
+
+        <!-- Message preview -->
+        <div class="preview-card" id="preview-message">
+          <div class="preview-tag">OPEN SNS COMM</div>
+          <h2 class="preview-title">OPEN<br>CHAT</h2>
+          <p class="preview-desc">Establish a secure link with ME. Encrypted chat channels ready for mail, mobile, or
+            repositories.</p>
+          <button class="p5-action-btn" onclick="enterSection('message')">OPEN CHANNEL ▶</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Character Silhouette Overlay (Joker) -->
+    <div id="home-character" aria-hidden="true">
+      <!-- High-fidelity custom SVG vector of Joker -->
+      <svg class="silhouette-svg" viewBox="0 0 500 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Stylized comic-slash lines background -->
+        <polygon points="120,450 380,120 400,280 280,600" fill="#ECEAE4" opacity="0.3" />
+        <polygon points="40,250 200,60 180,180 80,420" fill="#FF1A3C" opacity="0.4" />
+
+        <!-- Joker Trench Coat and Figure Outline (Black block) -->
+        <path d="M 230 140 
+                 C 220 135, 190 120, 160 115
+                 C 140 110, 120 130, 110 150
+                 C 100 170, 95 200, 85 240
+                 C 80 260, 60 300, 45 350
+                 C 30 400, 20 460, 30 520
+                 C 40 580, 60 640, 80 720
+                 C 85 740, 95 800, 100 800
+                 L 420 800
+                 C 420 800, 435 700, 420 620
+                 C 405 540, 370 420, 350 360
+                 C 330 300, 340 250, 320 220
+                 C 300 190, 280 180, 260 160
+                 Z" fill="#0B0B0F" />
+
+        <!-- Sharp Collar & Shoulders spikes -->
+        <path d="M 120 230 L 155 165 L 140 250 Z" fill="#ECEAE4" />
+        <path d="M 330 250 L 305 170 L 290 265 Z" fill="#ECEAE4" />
+
+        <!-- Mask highlights (White hand-cut overlay) -->
+        <path d="M 235 155 
+                 C 220 155, 205 160, 190 170
+                 C 180 178, 175 190, 178 198
+                 C 180 205, 195 210, 210 205
+                 C 220 200, 235 195, 245 205
+                 C 260 210, 275 205, 277 198
+                 C 280 190, 275 178, 265 170
+                 C 250 160, 245 155, 235 155
+                 Z" fill="#ECEAE4" />
+
+        <!-- Mask eyes cutout (Black slits) -->
+        <path d="M 198 185 C 190 188, 192 196, 202 192 Z" fill="#0B0B0F" />
+        <path d="M 252 185 C 260 188, 258 196, 248 192 Z" fill="#0B0B0F" />
+
+        <!-- Glove details (Red dynamic lines) -->
+        <path d="M 140 450 C 130 460, 120 495, 125 520 L 155 490 Z" fill="#FF1A3C" />
+        <path d="M 320 470 C 330 480, 340 515, 335 540 L 305 510 Z" fill="#FF1A3C" />
+
+        <!-- Red coat lining highlights (dynamic vectors) -->
+        <path d="M 210 240 L 225 380 L 195 440 L 210 580 L 235 800 L 255 800 L 240 520 L 250 350 Z" fill="#FF1A3C" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       VIEW: STAT TRACKER (ABOUT)
+       ══════════════════════════════════════ -->
+  <div id="view-stats" class="view" role="main">
+    <div class="subpage-watermark" aria-hidden="true">01</div>
+    <div class="p5-subpage-container">
+      <!-- Back navigation button -->
+      <div class="back-btn-container">
+        <button class="p5-back-btn" onclick="goHome()" aria-label="Return to Main Menu">◀ BACK</button>
+      </div>
+
+      <!-- Section Header -->
+      <header class="subpage-header">
+        <div class="subpage-title-wrap">
+          <span class="subpage-num">01 //</span>
+          <h1 class="subpage-title">StAt TrAcKeR</h1>
+        </div>
+        <span class="subpage-tag">ABOUT</span>
+      </header>
+
+      <!-- Main Contents Grid -->
+      <div class="stats-grid">
+        <!-- Left Side: Profile Bio and details -->
+        <section>
+          <div class="profile-card-p5">
+            <h2 class="profile-name">
+              <span>SAMBHAV</span>
+              <span class="last">GIRI</span>
+            </h2>
+            <p class="profile-bio">
+              I'm Sambhav Giri, a curious and creative mind navigating the world of technology. Passionate about
+              blending logic with aesthetics, I enjoy exploring code, design, and everything in between. My journey is
+              fueled by curiosity, caffeine, and the desire to build experiences that leave a mark.
+            </p>
+          </div>
+
+          <div class="profile-details-grid">
+            <div class="p5-detail-box">
+              <h3 class="detail-title">Student Developer</h3>
+              <div class="detail-meta">EXPERIENCE // 2023 - PRESENT</div>
+              <p class="detail-text">Learning and building projects in web development, interface design, problem
+                solving, and modern program structure.</p>
+            </div>
+            <div class="p5-detail-box">
+              <h3 class="detail-title">BSc CSIT — ACHS</h3>
+              <div class="detail-meta">EDUCATION // IN PROGRESS</div>
+              <p class="detail-text">Currently pursuing a Bachelor of Science in Computer Science and IT at Asian
+                College of Higher Studies, exploring computer science theory and real-world software applications.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right Side: Skills Radar Chart -->
+        <aside class="radar-card-p5">
+          <h3 class="radar-title">SKILL INDEX</h3>
+          <svg class="radar-svg" viewBox="0 0 320 320" role="img" aria-label="Radar chart showing technical skills">
+            <!-- Radar Grid Levels (Polygons) -->
+            <polygon class="radar-grid-polygon" points="160,50 255,105 255,215 160,270 65,215 65,105" />
+            <polygon class="radar-grid-polygon" points="160,77.5 231,118.75 231,201.25 160,242.5 89,201.25 89,118.75" />
+            <polygon class="radar-grid-polygon"
+              points="160,105 207.5,132.5 207.5,187.5 160,215 112.5,187.5 112.5,132.5" />
+            <polygon class="radar-grid-polygon"
+              points="160,132.5 184,146.25 184,173.75 160,187.5 136,173.75 136,146.25" />
+
+            <!-- Axes Lines -->
+            <line class="radar-axis-line" x1="160" y1="160" x2="160" y2="50" />
+            <line class="radar-axis-line" x1="160" y1="160" x2="255" y2="105" />
+            <line class="radar-axis-line" x1="160" y1="160" x2="255" y2="215" />
+            <line class="radar-axis-line" x1="160" y1="160" x2="160" y2="270" />
+            <line class="radar-axis-line" x1="160" y1="160" x2="65" y2="215" />
+            <line class="radar-axis-line" x1="160" y1="160" x2="65" y2="105" />
+
+            <!-- Dynamic Skill Radar Polygon -->
+            <!-- Stats: HTML: 85%, CSS: 80%, JS: 70%, C++: 60%, GIT: 75%, RESP: 80% -->
+            <!-- Coordinates calculated based on R_max=110, Center=(160, 160) -->
+            <!-- HTML: (160, 160 - 110*0.85) = (160, 66.5) -->
+            <!-- CSS:  (160 + 110*0.80*0.866, 160 - 110*0.80*0.5) = (236.2, 116) -->
+            <!-- JS:   (160 + 110*0.70*0.866, 160 + 110*0.70*0.5) = (226.7, 198.5) -->
+            <!-- C++:  (160, 160 + 110*0.60) = (160, 226) -->
+            <!-- GIT:  (160 - 110*0.75*0.866, 160 + 110*0.75*0.5) = (88.6, 201.2) -->
+            <!-- RESP: (160 - 110*0.80*0.866, 160 - 110*0.80*0.5) = (83.8, 116) -->
+            <polygon class="radar-data-polygon" points="160,66.5 236.2,116 226.7,198.5 160,226 88.6,201.2 83.8,116" />
+
+            <!-- Skill points markers -->
+            <circle class="radar-point" cx="160" cy="66.5" r="4" />
+            <circle class="radar-point" cx="236.2" cy="116" r="4" />
+            <circle class="radar-point" cx="226.7" cy="198.5" r="4" />
+            <circle class="radar-point" cx="160" cy="226" r="4" />
+            <circle class="radar-point" cx="88.6" cy="201.2" r="4" />
+            <circle class="radar-point" cx="83.8" cy="116" r="4" />
+
+            <!-- Labels text -->
+            <text class="radar-text" x="160" y="38" text-anchor="middle">HTML</text>
+            <text class="radar-text" x="268" y="103" text-anchor="start">CSS</text>
+            <text class="radar-text" x="268" y="227" text-anchor="start">JS</text>
+            <text class="radar-text" x="160" y="288" text-anchor="middle">C++</text>
+            <text class="radar-text" x="52" y="227" text-anchor="end">GIT</text>
+            <text class="radar-text" x="52" y="103" text-anchor="end">RESP</text>
+          </svg>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       VIEW: VELVET ROOM (WORK)
+       ══════════════════════════════════════ -->
+  <div id="view-velvet" class="view" role="main">
+    <div class="subpage-watermark" aria-hidden="true">02</div>
+
+    <!-- Gothic Chain Vectors overlay -->
+    <svg class="chain-overlay left" viewBox="0 0 40 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M20 0 v400 M12 20 h16 v20 h-16 z M12 60 h16 v20 h-16 z M12 100 h16 v20 h-16 z M12 140 h16 v20 h-16 z M12 180 h16 v20 h-16 z M12 220 h16 v20 h-16 z M12 260 h16 v20 h-16 z M12 300 h16 v20 h-16 z M12 340 h16 v20 h-16 z"
+        stroke="rgba(236,234,228,0.2)" stroke-width="3" fill="none" />
+    </svg>
+    <svg class="chain-overlay right" viewBox="0 0 40 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M20 0 v400 M12 20 h16 v20 h-16 z M12 60 h16 v20 h-16 z M12 100 h16 v20 h-16 z M12 140 h16 v20 h-16 z M12 180 h16 v20 h-16 z M12 220 h16 v20 h-16 z M12 260 h16 v20 h-16 z M12 300 h16 v20 h-16 z M12 340 h16 v20 h-16 z"
+        stroke="rgba(236,234,228,0.2)" stroke-width="3" fill="none" />
+    </svg>
+
+    <div class="p5-subpage-container">
+      <div class="back-btn-container">
+        <button class="p5-back-btn" onclick="goHome()" aria-label="Return to Main Menu">◀ BACK</button>
+      </div>
+
+      <header class="subpage-header">
+        <div class="subpage-title-wrap">
+          <span class="subpage-num">02 //</span>
+          <h1 class="subpage-title">VeLvEt RoOm</h1>
+        </div>
+        <span class="subpage-tag">WORK</span>
+      </header>
+
+      <!-- Persona Compendium style grid -->
+      <div class="compendium-container">
+
+        <!-- Project 1: RemotePlay -->
+        <div class="compendium-entry" onclick="toggleProjectDetails(this)" tabindex="0" role="button"
+          aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' ')toggleProjectDetails(this)">
+          <span class="compendium-num">N0. 101</span>
+          <span class="compendium-name">ReMoTePlAy</span>
+          <span class="compendium-arrow">▶</span>
+          <div class="compendium-details">
+            <p class="compendium-desc">A high-fidelity Figma interactive prototype of a next-generation movie streaming
+              client. Designed for seamless content discovery, dynamic slider lists, immersive dark backgrounds, and
+              visual responsiveness.</p>
+            <div class="compendium-stats">
+              <div class="stat-pill">LEVEL: <span>84</span></div>
+              <div class="stat-pill">CLASS: <span>FIGMA PROTOTYPE</span></div>
+              <div class="stat-pill">TYPE: <span>INTERFACE</span></div>
+            </div>
+            <a class="p5-action-btn"
+              href="https://www.figma.com/proto/sM32RacaNmR7u27FRCTbIj/movie?node-id=76-341&t=h3vayU67GBPKGnRZ-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2"
+              target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">SUMMON FIGMA PROTOTYPE ▶</a>
+          </div>
+        </div>
+
+        <!-- Project 2: TaskMaster -->
+        <div class="compendium-entry" onclick="toggleProjectDetails(this)" tabindex="0" role="button"
+          aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' ')toggleProjectDetails(this)">
+          <span class="compendium-num">N0. 102</span>
+          <span class="compendium-name">TaSkMaStEr</span>
+          <span class="compendium-arrow">▶</span>
+          <div class="compendium-details">
+            <p class="compendium-desc">A full-stack task organizer tool complete with workflow boards, category
+              structures, urgency sorting, and responsive user settings controls.</p>
+            <div class="compendium-stats">
+              <div class="stat-pill">LEVEL: <span>65</span></div>
+              <div class="stat-pill">CLASS: <span>WEB APPLICATION</span></div>
+              <div class="stat-pill">TYPE: <span>PRODUCTIVITY</span></div>
+            </div>
+            <button class="p5-action-btn" style="opacity: 0.5; cursor: not-allowed;" onclick="event.stopPropagation()">[
+              SUMMON PENDING — DEPLOYMENT IMMINENT ]</button>
+          </div>
+        </div>
+
+        <!-- Project 3: Portfolio v1 -->
+        <div class="compendium-entry" onclick="toggleProjectDetails(this)" tabindex="0" role="button"
+          aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' ')toggleProjectDetails(this)">
+          <span class="compendium-num">N0. 103</span>
+          <span class="compendium-name">PoRtFoLiO v1</span>
+          <span class="compendium-arrow">▶</span>
+          <div class="compendium-details">
+            <p class="compendium-desc">The initial iteration of my developer space. A responsive landing page detailing
+              personal projects, clean design rules, and direct links.</p>
+            <div class="compendium-stats">
+              <div class="stat-pill">LEVEL: <span>58</span></div>
+              <div class="stat-pill">CLASS: <span>STATIC HTML/CSS</span></div>
+              <div class="stat-pill">TYPE: <span>ARCHIVE</span></div>
+            </div>
+            <a class="p5-action-btn"
+              href="https://github.com/sambhav777q/portfolio"
+              target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">SUMMON PORTFOLIO V1 ▶</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       VIEW: MEMENTOS (BLOG)
+       ══════════════════════════════════════ -->
+  <div id="view-mementos" class="view" role="main">
+    <div class="subpage-watermark" aria-hidden="true">03</div>
+    <div class="p5-subpage-container">
+      <div class="back-btn-container">
+        <button class="p5-back-btn" onclick="goHome()" aria-label="Return to Main Menu">◀ BACK</button>
+      </div>
+
+      <header class="subpage-header">
+        <div class="subpage-title-wrap">
+          <span class="subpage-num">03 //</span>
+          <h1 class="subpage-title">MeMeNtOs</h1>
+        </div>
+        <span class="subpage-tag">LOG</span>
+      </header>
+
+      <!-- Mementos Grid - Target Lists (Blog Posts) -->
+      <div class="mementos-grid">
+        <!-- Card 1 -->
+        <article class="target-card" onclick="toggleLogDetails(this)" tabindex="0" role="button" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLogDetails(this)">
+          <!-- Target crosshair icon -->
+          <svg class="target-reticule" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2">
+            <circle cx="12" cy="12" r="9" />
+            <circle cx="12" cy="12" r="4" />
+            <line x1="12" y1="0" x2="12" y2="24" />
+            <line x1="0" y1="12" x2="24" y2="12" />
+          </svg>
+          <div class="target-status">TARGET IDENTIFIED</div>
+          <h3 class="target-title">GRID SYSTEM INTRO</h3>
+          <p class="target-desc">A deep dive into CSS Grid layouts, skew coordinates, and responsive styling alignment mapping in complex layouts.</p>
+          <button class="p5-action-btn" style="font-size:12px; padding:6px 14px;" onclick="event.stopPropagation(); toggleLogDetails(this.parentNode)">VIEW LOG</button>
+          
+          <div class="target-details">
+            <div class="target-log-content">
+              <strong>// METADATA: SYSTEM_GRID_LOG_908</strong><br><br>
+              Designing standard gaming interfaces requires dynamic positioning rules:<br>
+              • skew angles are mapped to <code>transform: skewX(-14deg) rotate(-3deg)</code>.<br>
+              • nested contents apply inverse transforms <code>skewX(14deg)</code> to counteract clipping distortion.<br>
+              • viewport coordinates are sized via HSL color models, rendering deep shadows using <code>rgba(0,0,0,0.95)</code> blocks.
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="target-card" onclick="toggleLogDetails(this)" tabindex="0" role="button" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLogDetails(this)">
+          <svg class="target-reticule" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2">
+            <circle cx="12" cy="12" r="9" />
+            <circle cx="12" cy="12" r="4" />
+            <line x1="12" y1="0" x2="12" y2="24" />
+            <line x1="0" y1="12" x2="24" y2="12" />
+          </svg>
+          <div class="target-status">TARGET IDENTIFIED</div>
+          <h3 class="target-title">WEB AUDIO API SYNTH</h3>
+          <p class="target-desc">How to synthesize gaming sound effects (clicks, slashes, sweeps) in the browser, bypassing audio file requests.</p>
+          <button class="p5-action-btn" style="font-size:12px; padding:6px 14px;" onclick="event.stopPropagation(); toggleLogDetails(this.parentNode)">VIEW LOG</button>
+          
+          <div class="target-details">
+            <div class="target-log-content">
+              <strong>// METADATA: AUDIO_SYNTH_LOG_402</strong><br><br>
+              To eliminate asset load delays, all interface audio triggers utilize local Web Audio oscillators:<br>
+              • <strong>Hover Tick</strong>: Synthesized using a triangle wave oscillator dropping rapidly from 800Hz to 150Hz over 0.08 seconds.<br>
+              • <strong>Select Slash</strong>: Overlay of white noise filter sweep with standard square wave frequencies to emulate retro gaming sfx.
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Empty state when required -->
+      <!--
+      <div class="mementos-empty">
+        <div class="p5-spinner-radar"></div>
+        <h3 class="mementos-empty-title">NO ACTIVE TARGETS</h3>
+        <p class="mementos-empty-sub">Dispatches and targets will sync upon next client build. Check system logs.</p>
+      </div>
+      -->
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       VIEW: MESSAGE LOG (CONTACT)
+       ══════════════════════════════════════ -->
+  <div id="view-message" class="view" role="main">
+    <div class="subpage-watermark" aria-hidden="true">04</div>
+    <div class="p5-subpage-container">
+      <div class="back-btn-container">
+        <button class="p5-back-btn" onclick="goHome()" aria-label="Return to Main Menu">◀ BACK</button>
+      </div>
+
+      <header class="subpage-header">
+        <div class="subpage-title-wrap">
+          <span class="subpage-num">04 //</span>
+          <h1 class="subpage-title">MeSsAgE LoG</h1>
+        </div>
+        <span class="subpage-tag">CONTACT</span>
+      </header>
+
+      <!-- SNS Chat Platform Mock -->
+      <div class="messenger-grid">
+        <div class="p5-phone-shell">
+          <!-- Screen Header -->
+          <div class="phone-screen-header">
+            <div class="phone-user-info">
+              <div class="phone-avatar">P</div>
+              <div class="phone-user-details">
+                <span class="phone-username">SAMBHAV GIRI</span>
+                <span class="phone-userstatus">ONLINE</span>
+              </div>
+            </div>
+            <div class="clock-display" style="font-family: var(--f-mono); font-size:12px; font-weight:bold;">00:00</div>
+          </div>
+
+          <!-- Messages Body -->
+          <div class="phone-screen-body" id="phone-screen-body" aria-live="polite">
+            <!-- Populated dynamically via script.js chatData -->
+          </div>
+
+          <!-- Message Form Input (P5 SNS Style) -->
+          <form class="phone-screen-input-area" id="phone-chat-form">
+            <input type="text" id="phone-chat-input" placeholder="Type a message to Sambhav..." required disabled />
+            <button type="submit" id="phone-chat-submit" disabled>SEND</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Include JS Scripts ── -->
+  <script src="sounds.js?v=2.07"></script>
+  <script src="script.js?v=2.07"></script>
+</body>
+
+</html>
