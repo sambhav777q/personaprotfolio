@@ -213,55 +213,132 @@
       </section>
     </main>
 
-    <!-- Character Silhouette Overlay (Joker) -->
+    <!-- Character Silhouette Overlay (Morgana) -->
     <div id="home-character" aria-hidden="true">
-      <!-- High-fidelity custom SVG vector of Joker -->
+      <!-- High-fidelity custom SVG vector of Morgana -->
       <svg class="silhouette-svg" viewBox="0 0 500 800" fill="none" xmlns="http://www.w3.org/2000/svg">
         <!-- Stylized comic-slash lines background -->
-        <polygon points="120,450 380,120 400,280 280,600" fill="#ECEAE4" opacity="0.3" />
-        <polygon points="40,250 200,60 180,180 80,420" fill="#FF1A3C" opacity="0.4" />
+        <polygon points="120,500 380,170 410,330 290,650" fill="#ECEAE4" opacity="0.3" />
+        <polygon points="40,300 200,110 180,230 80,470" fill="#FF1A3C" opacity="0.4" />
+        
+        <!-- Morgana Saber Blade (White/Silver highlight behind body) -->
+        <path d="M 340 450 
+                 C 370 410, 410 330, 415 250
+                 C 420 220, 410 200, 400 205
+                 C 390 210, 385 240, 370 310
+                 C 360 360, 335 410, 325 435
+                 Z" fill="#ECEAE4" opacity="0.9" />
+        <path d="M 330 460 L 350 430" stroke="#FF1A3C" stroke-width="6" stroke-linecap="round" />
 
-        <!-- Joker Trench Coat and Figure Outline (Black block) -->
-        <path d="M 230 140 
-                 C 220 135, 190 120, 160 115
-                 C 140 110, 120 130, 110 150
-                 C 100 170, 95 200, 85 240
-                 C 80 260, 60 300, 45 350
-                 C 30 400, 20 460, 30 520
-                 C 40 580, 60 640, 80 720
-                 C 85 740, 95 800, 100 800
-                 L 420 800
-                 C 420 800, 435 700, 420 620
-                 C 405 540, 370 420, 350 360
-                 C 330 300, 340 250, 320 220
-                 C 300 190, 280 180, 260 160
+        <!-- Morgana Body & Head Outline (Black silhouette) -->
+        <path d="M 250 220 
+                 C 220 220, 180 230, 160 210
+                 C 150 200, 140 160, 135 140
+                 C 130 130, 120 135, 125 150
+                 C 135 190, 140 240, 145 270
+                 C 115 300, 100 340, 100 380
+                 C 100 420, 125 450, 155 460
+                 C 155 470, 150 490, 145 520
+                 C 130 530, 115 540, 100 530
+                 C 85 520, 75 490, 70 470
+                 C 65 450, 50 460, 55 480
+                 C 65 520, 80 570, 110 580
+                 C 120 585, 130 580, 140 570
+                 C 145 620, 155 680, 165 740
+                 C 170 770, 150 780, 145 800
+                 L 355 800
+                 C 350 780, 330 770, 335 740
+                 C 345 680, 355 620, 360 570
+                 C 362 555, 368 535, 375 520
+                 C 385 500, 395 485, 390 460
+                 C 375 455, 362 445, 355 435
+                 C 385 410, 400 370, 400 330
+                 C 400 290, 385 250, 355 220
+                 C 360 200, 365 150, 375 140
+                 C 380 135, 370 130, 365 140
+                 C 360 160, 350 200, 340 210
+                 C 320 230, 280 220, 250 220
                  Z" fill="#0B0B0F" />
 
-        <!-- Sharp Collar & Shoulders spikes -->
-        <path d="M 120 230 L 155 165 L 140 250 Z" fill="#ECEAE4" />
-        <path d="M 330 250 L 305 170 L 290 265 Z" fill="#ECEAE4" />
+        <!-- Outer tail curve -->
+        <path d="M 165 720
+                 C 130 710, 90 670, 80 600
+                 C 70 530, 90 470, 115 440
+                 C 125 430, 135 445, 125 455
+                 C 105 480, 90 530, 98 590
+                 C 105 650, 140 685, 170 695
+                 Z" fill="#0B0B0F" />
 
-        <!-- Mask highlights (White hand-cut overlay) -->
-        <path d="M 235 155 
-                 C 220 155, 205 160, 190 170
-                 C 180 178, 175 190, 178 198
-                 C 180 205, 195 210, 210 205
-                 C 220 200, 235 195, 245 205
-                 C 260 210, 275 205, 277 198
-                 C 280 190, 275 178, 265 170
-                 C 250 160, 245 155, 235 155
+        <!-- Bandana Yellow Collar (Bright Persona 5 Yellow) -->
+        <path d="M 175 435 
+                 C 190 455, 230 465, 250 465
+                 C 270 465, 310 455, 325 435
+                 C 315 450, 285 478, 250 478
+                 C 215 478, 185 450, 175 435
+                 Z" fill="#FFD200" />
+        <!-- Bandana knot/tails on the side -->
+        <path d="M 175 435
+                 C 160 430, 140 435, 130 450
+                 C 125 460, 135 465, 145 455
+                 C 155 448, 165 442, 175 440
+                 Z" fill="#FFD200" />
+        <path d="M 178 445
+                 C 165 448, 150 460, 142 475
+                 C 138 485, 148 485, 155 472
+                 C 162 460, 170 452, 178 445
+                 Z" fill="#FFD200" />
+
+        <!-- White Mask / Face Pattern (High-contrast P5 visual) -->
+        <path d="M 160 330
+                 C 140 335, 130 355, 135 375
+                 C 140 395, 160 410, 190 420
+                 C 210 425, 230 415, 250 415
+                 C 270 415, 290 425, 310 420
+                 C 340 410, 360 395, 365 375
+                 C 370 355, 360 335, 340 330
+                 C 310 320, 280 340, 250 340
+                 C 220 340, 190 320, 160 330
                  Z" fill="#ECEAE4" />
 
-        <!-- Mask eyes cutout (Black slits) -->
-        <path d="M 198 185 C 190 188, 192 196, 202 192 Z" fill="#0B0B0F" />
-        <path d="M 252 185 C 260 188, 258 196, 248 192 Z" fill="#0B0B0F" />
+        <!-- Large Stylized Morgana Eyes (Blue & White) -->
+        <!-- Left Eye Outer White/Blue -->
+        <path d="M 165 345
+                 C 150 355, 155 385, 185 390
+                 C 205 395, 220 375, 215 355
+                 C 210 340, 180 335, 165 345
+                 Z" fill="#0B0B0F" />
+        <path d="M 170 350
+                 C 160 358, 162 380, 182 385
+                 C 198 388, 210 372, 208 358
+                 C 205 348, 180 342, 170 350
+                 Z" fill="#00A2FF" />
+        <!-- Left Pupil and Catchlight -->
+        <ellipse cx="188" cy="368" rx="8" ry="12" fill="#0B0B0F" transform="rotate(-10, 188, 368)" />
+        <circle cx="184" cy="362" r="3" fill="#ECEAE4" />
 
-        <!-- Glove details (Red dynamic lines) -->
-        <path d="M 140 450 C 130 460, 120 495, 125 520 L 155 490 Z" fill="#FF1A3C" />
-        <path d="M 320 470 C 330 480, 340 515, 335 540 L 305 510 Z" fill="#FF1A3C" />
+        <!-- Right Eye Outer White/Blue -->
+        <path d="M 335 345
+                 C 350 355, 345 385, 315 390
+                 C 295 395, 280 375, 285 355
+                 C 290 340, 320 335, 335 345
+                 Z" fill="#0B0B0F" />
+        <path d="M 330 350
+                 C 340 358, 338 380, 318 385
+                 C 302 388, 290 372, 292 358
+                 C 295 348, 320 342, 330 350
+                 Z" fill="#00A2FF" />
+        <!-- Right Pupil and Catchlight -->
+        <ellipse cx="312" cy="368" rx="8" ry="12" fill="#0B0B0F" transform="rotate(10, 312, 368)" />
+        <circle cx="316" cy="362" r="3" fill="#ECEAE4" />
 
-        <!-- Red coat lining highlights (dynamic vectors) -->
-        <path d="M 210 240 L 225 380 L 195 440 L 210 580 L 235 800 L 255 800 L 240 520 L 250 350 Z" fill="#FF1A3C" />
+        <!-- Cute Cat Mouth/Nose Highlight -->
+        <path d="M 246 390 L 254 390 L 250 394 Z" fill="#0B0B0F" />
+        <path d="M 242 400 Q 250 404 250 398 Q 250 404 258 400" stroke="#0B0B0F" stroke-width="2" fill="none" />
+
+        <!-- Belt / Pouch details (yellow/silver highlights on body) -->
+        <path d="M 210 520 L 290 520 L 290 535 L 210 535 Z" fill="#0B0B0F" stroke="#FFD200" stroke-width="3" />
+        <rect x="240" y="515" width="20" height="25" fill="#ECEAE4" rx="2" />
+        <circle cx="250" cy="527" r="4" fill="#0B0B0F" />
       </svg>
     </div>
   </div>

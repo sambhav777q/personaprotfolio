@@ -1575,7 +1575,7 @@ body {
     bottom: -5%;
     height: 48vh;
     width: 65vw;
-    opacity: 0.22;
+    opacity: 0.35;
     z-index: 1;
     pointer-events: none;
     transform-origin: bottom right;
@@ -1598,7 +1598,7 @@ body {
     align-items: center;
     height: 100%;
     width: 100%;
-    padding: 70px 20px 20px 20px;
+    padding: 45px 20px 20px 20px;
     box-sizing: border-box;
     overflow: hidden;
   }
@@ -1670,6 +1670,18 @@ body {
     outline: 4px solid var(--white);
     clip-path: polygon(2% 0%, 100% 4%, 98% 96%, 0% 100%);
     box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.95);
+  }
+
+  .preview-desc {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    padding-left: 10px;
+  }
+
+  .p5-action-btn {
+    font-size: 14px;
+    padding: 8px 18px;
   }
 
   .preview-card:nth-of-type(even) {

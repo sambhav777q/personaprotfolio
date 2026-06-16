@@ -130,20 +130,15 @@ function setupParallax() {
   const homeShards = document.getElementById('home-shards');
   if (!homeCharacter && !homeShards) return;
 
-  window.addEventListener('mousemove', (e) => {
-    // Only track during Home View to minimize CPU cycles
+  const updateParallax = (x, y) => {
     if (currentView !== 'home') return;
 
     const width = window.innerWidth;
     const height = window.innerHeight;
-    if (width <= 0 || height <= 0) return; // Prevent division-by-zero causing NaN transforms
+    if (width <= 0 || height <= 0) return;
 
-    const mouseX = e.clientX - width / 2;
-    const mouseY = e.clientY - height / 2;
-
-    // Normalize coordinates (-0.5 to 0.5)
-    const normX = mouseX / width;
-    const normY = mouseY / height;
+    const normX = (x - width / 2) / width;
+    const normY = (y - height / 2) / height;
 
     // Character and shards move opposite for depth illusion
     const charX = normX * -25;
@@ -157,7 +152,17 @@ function setupParallax() {
     if (homeShards) {
       homeShards.style.transform = `translate3d(${shardX}px, ${shardY}px, 0)`;
     }
+  };
+
+  window.addEventListener('mousemove', (e) => {
+    updateParallax(e.clientX, e.clientY);
   });
+
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches && e.touches.length > 0) {
+      updateParallax(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: true });
 }
 
 // ── Audio Toggle and State ──
@@ -771,39 +776,12 @@ async function handleFormSubmit() {
     body.appendChild(typing);
     body.scrollTop = body.scrollHeight;
 
-    let directSupabaseSuccess = false;
-    let directSupabaseError = null;
-
-    // ── 1. Direct Client-to-Supabase Write (Guarantees database storage even on static hosting) ──
-    try {
-      const dbRes = await fetch("https://nefzntxzwxjqwgpcahgw.supabase.co/rest/v1/messages", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lZnpudHh6d3hqcXdncGNhaGd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDU2NjIsImV4cCI6MjA5NTgyMTY2Mn0.7xD4AQqAsn5v2tU1KNp5P7OZPRMfCgEHNSYfYfEk8MI',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lZnpudHh6d3hqcXdncGNhaGd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDU2NjIsImV4cCI6MjA5NTgyMTY2Mn0.7xD4AQqAsn5v2tU1KNp5P7OZPRMfCgEHNSYfYfEk8MI',
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({
-          name: senderName,
-          email: senderEmail,
-          phone: senderPhone,
-          message: text
-        })
-      });
-      if (dbRes.ok) {
-        directSupabaseSuccess = true;
-        console.log("✅ Message saved directly to Supabase from browser client.");
-      } else {
-        directSupabaseError = await dbRes.text();
-      }
-    } catch (dbErr) {
-      console.warn("⚠️ Client-side Supabase insert failed:", dbErr);
-      directSupabaseError = dbErr.message;
-    }
-
-    // ── 2. Request Vercel Backend (For email notification routing) ──
     let backendSuccess = false;
+    let backendStoredInDb = false;
+    let backendEmailSent = false;
+    let backendError = null;
+
+    // ── 1. Request Backend (Handles both Database Storage & Email Notification) ──
     try {
       const res = await fetch('/api/send-email', {
         method: 'POST',
@@ -816,11 +794,51 @@ async function handleFormSubmit() {
         })
       });
       if (res.ok) {
+        const data = await res.json();
         backendSuccess = true;
-        console.log("✅ Backend email notification trigger succeeded.");
+        backendStoredInDb = data.storedInDb;
+        backendEmailSent = data.emailSent;
+        console.log("✅ Backend response:", data);
+      } else {
+        backendError = await res.text();
+        console.warn("⚠️ Backend responded with error status:", res.status, backendError);
       }
     } catch (err) {
-      console.warn("⚠️ Backend notification dispatch failed:", err);
+      console.warn("⚠️ Backend notification dispatch failed/unavailable:", err);
+      backendError = err.message;
+    }
+
+    let directSupabaseSuccess = false;
+    let directSupabaseError = null;
+
+    // ── 2. Fallback: Direct Client-to-Supabase Write (If backend failed/unavailable, e.g. on static hosting) ──
+    if (!backendSuccess) {
+      try {
+        const dbRes = await fetch("https://nefzntxzwxjqwgpcahgw.supabase.co/rest/v1/messages", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lZnpudHh6d3hqcXdncGNhaGd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDU2NjIsImV4cCI6MjA5NTgyMTY2Mn0.7xD4AQqAsn5v2tU1KNp5P7OZPRMfCgEHNSYfYfEk8MI',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lZnpudHh6d3hqcXdncGNhaGd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDU2NjIsImV4cCI6MjA5NTgyMTY2Mn0.7xD4AQqAsn5v2tU1KNp5P7OZPRMfCgEHNSYfYfEk8MI',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            name: senderName,
+            email: senderEmail,
+            phone: senderPhone,
+            message: text
+          })
+        });
+        if (dbRes.ok) {
+          directSupabaseSuccess = true;
+          console.log("✅ Message saved directly to Supabase from browser client.");
+        } else {
+          directSupabaseError = await dbRes.text();
+        }
+      } catch (dbErr) {
+        console.warn("⚠️ Client-side Supabase insert failed:", dbErr);
+        directSupabaseError = dbErr.message;
+      }
     }
 
     // Remove typing bubble
@@ -829,17 +847,21 @@ async function handleFormSubmit() {
     }
 
     // ── 3. Success / Error Feedback ──
-    if (directSupabaseSuccess || backendSuccess) {
+    if (backendSuccess || directSupabaseSuccess) {
       const successBubble = document.createElement('div');
       successBubble.className = 'p5-bubble incoming';
       
       let feedback = "Message sent successfully!";
-      if (directSupabaseSuccess && backendSuccess) {
-        feedback = "Message sent successfully! (Saved to DB & Email notified)";
+      if (backendSuccess) {
+        if (backendStoredInDb && backendEmailSent) {
+          feedback = "Message sent successfully! (Saved to DB & Email notified)";
+        } else if (backendStoredInDb) {
+          feedback = "Message sent successfully! (Saved to database)";
+        } else if (backendEmailSent) {
+          feedback = "Message sent successfully! (Email notification sent)";
+        }
       } else if (directSupabaseSuccess) {
         feedback = "Message sent successfully! (Saved to database)";
-      } else if (backendSuccess) {
-        feedback = "Message sent successfully! (Email notification sent)";
       }
 
       successBubble.innerHTML = `
@@ -848,7 +870,7 @@ async function handleFormSubmit() {
       `;
       body.appendChild(successBubble);
     } else {
-      console.error("❌ Both client database insert and email dispatch failed:", directSupabaseError);
+      console.error("❌ Both backend dispatch and client database fallback failed.", { backendError, directSupabaseError });
       const errorBubble = document.createElement('div');
       errorBubble.className = 'p5-bubble incoming';
       errorBubble.style.borderColor = 'var(--red)';

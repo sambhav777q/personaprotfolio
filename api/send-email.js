@@ -47,7 +47,7 @@ module.exports = async (req, res) => {
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const SUPABASE_URL = process.env.SUPABASE_URL;
-  const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_KEY;
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_KEY;
 
   if (!RESEND_API_KEY && (!SUPABASE_URL || !SUPABASE_KEY)) {
     console.error('❌ ERROR: Neither Resend nor Supabase credentials are configured!');
