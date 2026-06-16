@@ -180,7 +180,7 @@ app.post('/api/send-email', rateLimiter, async (req, res) => {
     try {
       const data = await resend.emails.send({
         from: 'onboarding@resend.dev',
-        to: 'csit2081041_sambhav@achsnepal.edu.np',
+        to: process.env.DESTINATION_EMAIL || 'girisambhav321@gmail.com',
         subject: `💬 New Message from ${safeName}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 4px solid #000; padding: 25px; background-color: #ECEAE4;">
