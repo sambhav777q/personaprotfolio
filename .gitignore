@@ -5,3 +5,5 @@ C:\Users\prati\.gemini\antigravity-ide\brain\*
 .gemini
 package-lock.json
 *.log
+*.code-workspace
+

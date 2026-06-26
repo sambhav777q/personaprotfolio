@@ -178,9 +178,9 @@ app.post('/api/send-email', rateLimiter, async (req, res) => {
 
   if (RESEND_API_KEY && resend) {
     try {
-      const data = await resend.emails.send({
+      const { data, error } = await resend.emails.send({
         from: 'onboarding@resend.dev',
-        to: process.env.DESTINATION_EMAIL || 'girisambhav321@gmail.com',
+        to: process.env.DESTINATION_EMAIL || 'csit2081041_sambhav@achsnepal.edu.np',
         subject: `💬 New Message from ${safeName}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 4px solid #000; padding: 25px; background-color: #ECEAE4;">
@@ -214,8 +214,13 @@ app.post('/api/send-email', rateLimiter, async (req, res) => {
         `
       });
 
-      console.log('✅ Email sent successfully via Resend:', data);
-      emailSuccess = true;
+      if (error) {
+        console.error('❌ Resend API error:', error);
+        emailError = error.message;
+      } else {
+        console.log('✅ Email sent successfully via Resend:', data);
+        emailSuccess = true;
+      }
     } catch (err) {
       console.error('❌ Resend dispatch error:', err);
       emailError = err.message;
