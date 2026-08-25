@@ -326,8 +326,6 @@ body {
   bottom: 0;
   width: 48%;
   background-color: var(--black);
-  background-image: radial-gradient(circle, rgba(236,234,228,0.85) 2px, transparent 2px);
-  background-size: 14px 14px;
   clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
   z-index: 2;
   box-shadow: -15px 0 30px rgba(0, 0, 0, 0.5);
