@@ -378,15 +378,15 @@ body {
 /* Character Silhouette wrapper */
 #home-character {
   position: absolute;
-  right: -3%;
-  bottom: -5%;
-  height: 90%;
-  width: 45vw;
+  right: 0%;
+  bottom: -2%;
+  height: 75%;
+  width: 35vw;
   z-index: 3;
   pointer-events: none;
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: flex-end;
   animation: charIntro 1s cubic-bezier(0.19, 1, 0.22, 1) forwards;
   will-change: transform, opacity;
   backface-visibility: hidden;
@@ -394,7 +394,7 @@ body {
 }
 
 .silhouette-svg {
-  height: 105%;
+  height: 100%;
   max-width: 100%;
   object-fit: contain;
   filter: drop-shadow(-10px -10px 0px var(--black)) drop-shadow(10px 10px 0px rgba(255,255,255,0.7));
