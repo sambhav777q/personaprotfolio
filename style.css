@@ -1569,22 +1569,7 @@ body {
   }
 
   #home-character {
-    display: flex;
-    position: absolute;
-    right: -15%;
-    bottom: -5%;
-    height: 48vh;
-    width: 65vw;
-    opacity: 0.35;
-    z-index: 6;
-    pointer-events: none;
-    transform-origin: bottom right;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-  }
-
-  #home-character .silhouette-svg {
-    height: 100%;
-    width: 100%;
+    display: none;
   }
 
   .p5-sticker {
