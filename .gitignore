@@ -6,4 +6,5 @@ C:\Users\prati\.gemini\antigravity-ide\brain\*
 package-lock.json
 *.log
 *.code-workspace
-
+.wrangler
+.wrangler/

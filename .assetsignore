@@ -1,0 +1,15 @@
+node_modules/
+.git/
+.env
+.gitignore
+.assetsignore
+wrangler.jsonc
+package-lock.json
+package.json
+server.js
+api/
+chrome_debug.log
+chrome_log.txt
+README.md
+persona_old.html
+.gemini/
