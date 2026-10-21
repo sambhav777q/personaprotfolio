@@ -33,13 +33,6 @@
 
 <!-- Background art layers -->
 <div id="bg" aria-hidden="true">
-  <div class="bg-layer" id="bg-stripes"></div>
-  <svg class="bg-star" style="left:6%;top:8%;width:26vmax;height:26vmax" viewBox="0 0 100 100">
-    <polygon points="50,0 60,35 98,35 68,57 78,94 50,72 22,94 32,57 2,35 40,35" fill="#000"/>
-  </svg>
-  <svg class="bg-star s2" style="right:4%;bottom:6%;width:34vmax;height:34vmax" viewBox="0 0 100 100">
-    <polygon points="50,0 60,35 98,35 68,57 78,94 50,72 22,94 32,57 2,35 40,35" fill="#fff"/>
-  </svg>
   <!-- Per-screen menu artwork: assets/menus/<screen>.jpg -->
   <img class="menu-art" id="art-home" src="assets/menus/home.jpg" alt=""
        onload="document.body.classList.add('has-art-home')" onerror="this.remove()">
@@ -51,13 +44,8 @@
        onload="document.body.classList.add('has-art-about')" onerror="this.remove()">
   <img class="menu-art" id="art-contact" src="assets/menus/contact.jpg" alt=""
        onload="document.body.classList.add('has-art-contact')" onerror="this.remove()">
-  <div class="bg-layer" id="bg-halftone"></div>
-  <div class="bg-layer" id="bg-vignette"></div>
 </div>
 <div id="slash" aria-hidden="true"></div>
-
-<!-- Hero art slot (falls back cleanly if not present) -->
-<img id="hero-art" src="assets/hero.png" alt="" onerror="this.remove()">
 
 <!-- Screen transition wipe -->
 <div id="wipe" aria-hidden="true">
@@ -129,7 +117,7 @@
       <div class="paper">
         <!-- Profile photo from reference -->
         <figure class="about-photo">
-          <img src="assets/me.jpg" alt="Sambhav Giri" onerror="this.parentElement.remove()">
+          <img src="assets/me.png" alt="Sambhav Giri" onerror="this.parentElement.remove()">
           <figcaption>Sambhav · ACHS</figcaption>
         </figure>
         <p class="quote"><em>"I'm a curious and creative mind navigating the world of technology — blending logic with aesthetics, fueled by curiosity, caffeine, and the desire to build experiences that leave a mark."</em></p>

@@ -18,39 +18,44 @@ body{
 .display{font-family:'Archivo Black','Arial Black',Impact,sans-serif;}
 
 /* ============ BACKGROUND LAYERS ============ */
-#bg{position:fixed;inset:-6vmax;z-index:0;pointer-events:none;}
-.bg-layer{position:absolute;inset:0;will-change:transform;}
-#bg-stripes{
-  background:repeating-linear-gradient(115deg,
-    var(--red) 0 46px, var(--red-deep) 46px 52px,
-    var(--red) 52px 120px, #c4000f 120px 126px);
-  animation:stripeDrift 22s linear infinite;
+#bg{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+  background:var(--black);
 }
-@keyframes stripeDrift{from{background-position:0 0;}to{background-position:520px 0;}}
-#bg-halftone{
-  background-image:radial-gradient(circle, rgba(0,0,0,.35) 1.6px, transparent 1.7px);
-  background-size:14px 14px;
-  mix-blend-mode:multiply;
-  animation:halftoneDrift 30s linear infinite;
+.menu-art{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  image-rendering:-webkit-optimize-contrast;
+  image-rendering:high-quality;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .35s ease;
 }
-@keyframes halftoneDrift{from{background-position:0 0;}to{background-position:-140px 140px;}}
-#bg-vignette{
-  background:radial-gradient(ellipse at 32% 40%, transparent 30%, rgba(0,0,0,.72) 100%);
-}
-.bg-star{position:absolute;opacity:.16;animation:spin 60s linear infinite;transform-origin:center;}
-.bg-star.s2{animation-duration:90s;animation-direction:reverse;opacity:.1;}
-@keyframes spin{to{transform:rotate(360deg);}}
+body[data-screen="home"]     #art-home,
+body[data-screen="projects"] #art-projects,
+body[data-screen="skills"]   #art-skills,
+body[data-screen="about"]    #art-about,
+body[data-screen="contact"]  #art-contact{opacity:1;}
 
 /* big black slash behind the menu, like a torn silhouette */
 #slash{
   position:fixed;z-index:1;inset:0;pointer-events:none;
   background:var(--black);
   clip-path:polygon(58% 0, 100% 0, 100% 100%, 40% 100%, 52% 62%, 45% 60%, 60% 24%, 51% 22%);
-  transition:clip-path .8s cubic-bezier(.8,0,.15,1);
+  transition:clip-path .5s cubic-bezier(.8,0,.15,1);
 }
 body[data-screen]:not([data-screen="home"]) #slash{
   clip-path:polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 62%, 0 60%, 0 24%, 0 22%);
 }
+body.has-art-home #slash{display:none;}
 
 /* ============ SHELL / HUD ============ */
 #shell{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;}
@@ -377,52 +382,6 @@ body[data-screen]:not([data-screen="home"]) #hero-art{
 #big-name:hover .ch:nth-child(odd){animation-delay:.03s;}
 #big-name:hover .ch:nth-child(3n){animation-delay:.06s;}
 #big-name:active{transform:scale(.985);}
-
-/* ============ PER-SCREEN MENU ARTWORK ============ */
-/* Each screen can have its own art at assets/menus/<screen>.jpg.
-   Missing files remove themselves; the CSS stripes show through. */
-.menu-art{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;will-change:transform;pointer-events:none;
-  transition:opacity .55s ease;
-}
-body[data-screen="home"]     #art-home,
-body[data-screen="projects"] #art-projects,
-body[data-screen="skills"]   #art-skills,
-body[data-screen="about"]    #art-about,
-body[data-screen="contact"]  #art-contact{opacity:1;}
-
-/* the home artwork carries its own black diagonal — drop the CSS slash */
-body.has-art-home #slash{display:none;}
-/* soften the halftone overlay whenever a screen's art is showing */
-body.has-art-home[data-screen="home"] #bg-halftone,
-body.has-art-projects[data-screen="projects"] #bg-halftone,
-body.has-art-skills[data-screen="skills"] #bg-halftone,
-body.has-art-about[data-screen="about"] #bg-halftone,
-body.has-art-contact[data-screen="contact"] #bg-halftone{opacity:.5;}
-
-/* readability scrims — darken the side the content sits on */
-body.has-art-home[data-screen="home"] #bg-vignette,
-body.has-art-skills[data-screen="skills"] #bg-vignette{
-  background:
-    linear-gradient(100deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,.12) 36%, transparent 58%),
-    radial-gradient(ellipse at 32% 40%, transparent 30%, rgba(0,0,0,.55) 100%);
-}
-body.has-art-contact[data-screen="contact"] #bg-vignette{
-  background:
-    linear-gradient(260deg, rgba(0,0,0,.48) 0%, rgba(0,0,0,.14) 38%, transparent 60%),
-    radial-gradient(ellipse at 68% 40%, transparent 30%, rgba(0,0,0,.55) 100%);
-}
-/* the About art's star pattern is busy — heavier scrim so the header reads */
-body.has-art-about[data-screen="about"] #bg-vignette{
-  background:
-    linear-gradient(260deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.3) 42%, transparent 64%),
-    radial-gradient(ellipse at 68% 40%, transparent 25%, rgba(0,0,0,.6) 100%);
-}
-body.has-art-home #menu .ch:not(.box):not(.boxw),
-body.has-art-home #big-name .ch:not(.box):not(.boxw){
-  text-shadow:2px 2px 0 rgba(0,0,0,.6);
-}
 
 /* ============ RIGHT-ALIGNED SCREENS (art on the left) ============ */
 .screen.align-right.active{

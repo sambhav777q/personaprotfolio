@@ -27,7 +27,6 @@ const View = {
     document.querySelectorAll("[data-ransom]").forEach(el => this.ransomize(el));
     this.els.sfx.volume = 0.45;
     this.startClock();
-    this.startParallax();
     document.body.classList.add("loaded");
   },
 
@@ -181,30 +180,5 @@ const View = {
       this.els.clock.textContent =
         new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) + " · KTM";
     }, 1000);
-  },
-
-  startParallax() {
-    if (this.reducedMotion) return;
-    const stripes = document.getElementById("bg-stripes");
-    const halftone = document.getElementById("bg-halftone");
-    const arts = [...document.querySelectorAll(".menu-art")];
-    let tx = 0, ty = 0, cx = 0, cy = 0;
-    addEventListener("mousemove", e => {
-      tx = e.clientX / innerWidth - 0.5;
-      ty = e.clientY / innerHeight - 0.5;
-    }, { passive: true });
-    const loop = () => {
-      if (document.visibilityState !== "hidden" && (!document.body.dataset.screen || document.body.dataset.screen === "home")) {
-        cx += (tx - cx) * 0.06; cy += (ty - cy) * 0.06;
-        if (stripes) stripes.style.transform = `translate3d(${cx * 22}px, ${cy * 14}px, 0)`;
-        if (halftone) halftone.style.transform = `translate3d(${cx * -34}px, ${cy * -22}px, 0)`;
-        arts.forEach(a => {
-          if (a.isConnected)
-            a.style.transform = `translate3d(${cx * 14}px, ${cy * 9}px, 0) scale(1.04)`;
-        });
-      }
-      requestAnimationFrame(loop);
-    };
-    loop();
   },
 };
