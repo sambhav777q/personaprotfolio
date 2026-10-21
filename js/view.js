@@ -27,7 +27,28 @@ const View = {
     document.querySelectorAll("[data-ransom]").forEach(el => this.ransomize(el));
     this.els.sfx.volume = 0.45;
     this.startClock();
+    this.initClickBurst();
     document.body.classList.add("loaded");
+  },
+
+  /* ---------- Persona 5 Comic Click Burst ---------- */
+  initClickBurst() {
+    addEventListener("pointerdown", e => {
+      if (this.reducedMotion) return;
+      const burst = document.createElement("div");
+      burst.className = "p5-click-burst";
+      burst.style.left = `${e.clientX}px`;
+      burst.style.top = `${e.clientY}px`;
+      burst.innerHTML = `
+        <svg viewBox="0 0 100 100" class="burst-svg">
+          <polygon points="50,0 58,35 95,20 68,50 95,80 58,65 50,100 42,65 5,80 32,50 5,20 42,35" fill="var(--red)"/>
+          <polygon points="50,15 55,40 80,30 62,50 80,70 55,60 50,85 45,60 20,70 38,50 20,30 45,40" fill="var(--white)"/>
+          <polygon points="50,28 53,44 68,38 58,50 68,62 53,56 50,72 47,56 32,62 42,50 32,38 47,44" fill="var(--black)"/>
+        </svg>
+      `;
+      document.body.appendChild(burst);
+      setTimeout(() => burst.remove(), 420);
+    }, { passive: true });
   },
 
   // Deterministic pseudo-random hash (so letters look the same every visit)

@@ -44,6 +44,15 @@
        onload="document.body.classList.add('has-art-about')" onerror="this.remove()">
   <img class="menu-art" id="art-contact" src="assets/menus/contact.jpg" alt=""
        onload="document.body.classList.add('has-art-contact')" onerror="this.remove()">
+  <!-- Ambient floating phantom shards (GPU accelerated, 60fps) -->
+  <div id="p5-particles" aria-hidden="true">
+    <div class="shard s1"></div>
+    <div class="shard s2"></div>
+    <div class="shard s3"></div>
+    <div class="shard s4"></div>
+    <div class="shard s5"></div>
+    <div class="shard s6"></div>
+  </div>
 </div>
 <div id="slash" aria-hidden="true"></div>
 
@@ -68,7 +77,11 @@
 
     <!-- HOME -->
     <section class="screen active" id="screen-home" aria-label="Main menu">
-      <div id="intro-eyebrow">Phantom Thief System // Take Your Time</div>
+      <div id="intro-eyebrow">
+        <span class="p5-badge"><span class="badge-star">★</span> TAKE YOUR TIME</span>
+        <span class="eyebrow-sep">//</span>
+        <span>PHANTOM THIEF SYSTEM</span>
+      </div>
       <h1 id="big-name">
         <span class="ransom" data-ransom="SAMBHAV"></span>
         <span class="ransom" data-ransom="GIRI"></span>
