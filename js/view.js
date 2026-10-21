@@ -16,7 +16,6 @@ const View = {
     repoStatus: document.getElementById("repo-status"),
     skillsBody: document.getElementById("skills-body"),
     sfx:        document.getElementById("sfx-select"),
-    cursor:     document.getElementById("cursor"),
     clock:      document.getElementById("clock"),
   },
 
@@ -29,7 +28,6 @@ const View = {
     this.els.sfx.volume = 0.45;
     this.startClock();
     this.startParallax();
-    this.startCursor();
     document.body.classList.add("loaded");
   },
 
@@ -208,36 +206,5 @@ const View = {
       requestAnimationFrame(loop);
     };
     loop();
-  },
-
-  // 30-frame sprite-strip cursor extracted from the original .ani files
-  startCursor() {
-    if (!matchMedia("(pointer:fine)").matches || this.reducedMotion) return;
-    const cur = this.els.cursor;
-    document.body.classList.add("cursor-on");
-    let x = -100, y = -100, frame = 0, last = 0, visible = false;
-
-    addEventListener("mousemove", e => {
-      x = e.clientX; y = e.clientY;
-      if (!visible) { cur.style.display = "block"; visible = true; }
-      const t = e.target;
-      const overLink = t.closest &&
-        t.closest("a,button,.card,.menu-item,.back-hint,.contact-chip,#big-name");
-      cur.classList.toggle("link", !!overLink);
-    }, { passive: true });
-
-    document.documentElement.addEventListener("mouseleave", () => {
-      cur.style.display = "none"; visible = false;
-    });
-
-    const tick = ts => {
-      if (ts - last >= 50) {                       // 50ms = original .ani frame rate
-        frame = (frame + 1) % 30; last = ts;
-        cur.style.backgroundPosition = -frame * 48 + "px 0";
-      }
-      cur.style.transform = `translate(${x}px, ${y}px)`;
-      requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
   },
 };

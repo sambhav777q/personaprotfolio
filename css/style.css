@@ -371,22 +371,6 @@ body[data-screen]:not([data-screen="home"]) #hero-art{
 #wipe.go .flash{animation:flash .7s linear forwards;}
 @keyframes flash{0%,44%{opacity:0;}48%{opacity:1;}56%{opacity:0;}100%{opacity:0;}}
 
-/* ============ CUSTOM ANIMATED CURSOR ============ */
-@media (pointer:fine){
-  body.cursor-on, body.cursor-on *{cursor:none !important;}
-}
-#cursor{
-  position:fixed;left:0;top:0;width:48px;height:48px;z-index:9999;
-  pointer-events:none;display:none;
-  background-repeat:no-repeat;background-position:0 0;
-  background-image:url("../assets/cursors/normal.png");
-  margin:-3px 0 0 -4px; /* NORMAL hotspot */
-}
-#cursor.link{
-  background-image:url("../assets/cursors/link.png");
-  margin:-6px 0 0 -6px; /* LINK_SELECT hotspot */
-}
-
 /* clickable name */
 #big-name{cursor:pointer;width:max-content;}
 #big-name:hover .ch{animation:jitter .35s ease both;}
