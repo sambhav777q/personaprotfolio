@@ -119,16 +119,28 @@ const Model = {
     ]},
   ],
 
-  // ---- Data fetching ----
+  // ---- Data fetching with session caching optimization ----
   async fetchRepos() {
     const skip = new Set(this.featuredRepoNames);
+    try {
+      const cached = sessionStorage.getItem("p5_cached_repos");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        return { repos: parsed.filter(r => !skip.has(r.name)), live: true };
+      }
+    } catch {}
+
     try {
       const res = await fetch(
         `https://api.github.com/users/${this.githubUser}/repos?per_page=100&sort=updated`
       );
       if (!res.ok) throw new Error(res.status);
-      const repos = (await res.json()).filter(r => !r.fork && !skip.has(r.name));
-      return { repos, live: true };
+      const data = await res.json();
+      const repos = data.filter(r => !r.fork);
+      try {
+        sessionStorage.setItem("p5_cached_repos", JSON.stringify(repos));
+      } catch {}
+      return { repos: repos.filter(r => !skip.has(r.name)), live: true };
     } catch {
       return { repos: this.fallbackRepos.filter(r => !skip.has(r.name)), live: false };
     }

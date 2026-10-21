@@ -196,13 +196,15 @@ const View = {
       ty = e.clientY / innerHeight - 0.5;
     }, { passive: true });
     const loop = () => {
-      cx += (tx - cx) * 0.06; cy += (ty - cy) * 0.06;
-      stripes.style.transform = `translate(${cx * 22}px, ${cy * 14}px)`;
-      halftone.style.transform = `translate(${cx * -34}px, ${cy * -22}px)`;
-      arts.forEach(a => {
-        if (a.isConnected)
-          a.style.transform = `translate(${cx * 14}px, ${cy * 9}px) scale(1.04)`;
-      });
+      if (document.visibilityState !== "hidden" && (!document.body.dataset.screen || document.body.dataset.screen === "home")) {
+        cx += (tx - cx) * 0.06; cy += (ty - cy) * 0.06;
+        if (stripes) stripes.style.transform = `translate3d(${cx * 22}px, ${cy * 14}px, 0)`;
+        if (halftone) halftone.style.transform = `translate3d(${cx * -34}px, ${cy * -22}px, 0)`;
+        arts.forEach(a => {
+          if (a.isConnected)
+            a.style.transform = `translate3d(${cx * 14}px, ${cy * 9}px, 0) scale(1.04)`;
+        });
+      }
       requestAnimationFrame(loop);
     };
     loop();
